@@ -48,6 +48,7 @@ fun PersianLinearDatePickerDialog(
     onDateChanged: ((year: Int, month: Int, day: Int) -> Unit)? = null,
     // submitTitle: String = "تایید",
     dismissTitle: String = "بستن",
+    todayTitle: String = "امروز",
     textButtonStyle: TextStyle = LocalTextStyle.current,
     shape: Shape = MaterialTheme.shapes.medium,
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
@@ -85,7 +86,7 @@ fun PersianLinearDatePickerDialog(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 TextButton(onClick = { controller.resetDate(onDateChanged) }) {
-                    Text(text = "امروز", style = textButtonStyle, color = contentColor)
+                    Text(text = todayTitle, style = textButtonStyle, color = contentColor)
                 }
                 Row(
                     modifier = Modifier.wrapContentWidth(),

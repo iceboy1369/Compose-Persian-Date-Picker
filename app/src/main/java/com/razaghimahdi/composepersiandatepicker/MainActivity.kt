@@ -78,6 +78,8 @@ class MainActivity : ComponentActivity() {
                     PersianLinearDatePickerDialog(
                         rememberPersianDialogDatePicker,
                         Modifier.fillMaxWidth(),
+                        todayTitle = "today",
+                        dismissTitle = "close",
                         onDismissRequest = { showDialog.value = false },
                         onDateChanged = { year, month, day ->
                             // do something...

@@ -57,7 +57,8 @@ internal fun LinearDatePickerBottomSheetContent(
     controller: PersianDatePickerController,
     modifier: Modifier = Modifier,
     onDateChanged: ((year: Int, month: Int, day: Int) -> Unit)? = null,
-    submitTitle: String = "تایید",
+    submitTitle: String,
+    todayTitle: String,
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
     contentColor: Color = contentColorFor(backgroundColor),
     textButtonStyle: TextStyle = LocalTextStyle.current,
@@ -71,7 +72,7 @@ internal fun LinearDatePickerBottomSheetContent(
     LaunchedEffect(recomposeToggleState.value) {}
 
 
-    var tmpController by remember(key1 = controller) {
+    val tmpController by remember(key1 = controller) {
         mutableStateOf(PersianDatePickerController())
     }
     LaunchedEffect(controller) {
@@ -138,7 +139,7 @@ internal fun LinearDatePickerBottomSheetContent(
                         })
 
 
-                        TextButton(label = "امروز", modifier = Modifier, enabled = !isToday, textButtonStyle = textButtonStyle, contentColor = contentColor) {
+                        TextButton(label = todayTitle, modifier = Modifier, enabled = !isToday, textButtonStyle = textButtonStyle, contentColor = contentColor) {
                             tmpController.resetDate()
                             recomposeToggleState.value = !recomposeToggleState.value
                         }
