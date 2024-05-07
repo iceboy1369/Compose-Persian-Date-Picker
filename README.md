@@ -8,7 +8,7 @@ with options for updating the selected date and other settings.
 If you like or are using this project to learn or start your solution, please give it a star. Thanks!
 
 
-[![](https://jitpack.io/v/razaghimahdi/Compose-Persian-Date-Picker.svg)](https://jitpack.io/#razaghimahdi/Compose-Persian-Date-Picker)
+[![](https://jitpack.io/v/iceboy1369/Compose-Persian-Date-Picker.svg)](https://jitpack.io/#iceboy1369/Compose-Persian-Date-Picker)
 
 
 | Bottom Sheet                               | Dialog                                     |
@@ -34,7 +34,7 @@ Here's a quick example of how to use the library:
 
 ```groovy
     dependencies {
-            implementation 'com.github.razaghimahdi:Compose-Persian-Date-Picker:1.1.1'
+            implementation 'com.github.iceboy1369:Compose-Persian-Date-Picker:1.1.2'
     } 
 ```
 
@@ -52,6 +52,8 @@ if (showDialog.value) {
     PersianLinearDatePickerDialog(
         rememberPersianDatePicker,
         Modifier.fillMaxWidth(),
+        todayTitle = "today",
+        dismissTitle = "close",
         onDismissRequest = { showDialog.value = false },
         onDateChanged = { year, month, day ->
             // do something...
@@ -64,6 +66,8 @@ if (bottomSheetState.isVisible) {
             .fillMaxSize(),
         sheetState = bottomSheetState,
         controller = rememberPersianBottomSheetDatePickerController,
+        todayTitle = "today",
+        submitTitle = "ok",
         onDismissRequest = {
             coroutine.launch {
                 bottomSheetState.hide()
@@ -123,6 +127,8 @@ rememberPersianBottomSheetDatePickerController.updateMinYear(1395)
 PersianLinearDatePickerDialog(
     rememberPersianDatePicker,
     Modifier.fillMaxWidth(),
+    todayTitle = "today",
+    dismissTitle = "close",
     onDismissRequest = { showDialog.value = false },
     onDateChanged = { year, month, day ->
         // do something...
@@ -134,6 +140,8 @@ DatePickerLinearModalBottomSheet(
         .fillMaxSize(),
     sheetState = bottomSheetState,
     controller = rememberPersianBottomSheetDatePickerController,
+    todayTitle = "today",
+    submitTitle = "ok",
     onDismissRequest = {
         coroutine.launch {
             bottomSheetState.hide()
