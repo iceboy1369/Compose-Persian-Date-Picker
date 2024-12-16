@@ -46,30 +46,14 @@ class MainActivity : ComponentActivity() {
 
 
                 LaunchedEffect(key1 = Unit) {
-
-                    rememberPersianDialogDatePicker.updateDate(date = Date())
                     rememberPersianDialogDatePicker.updateDate(timestamp = Date().time)
-                    rememberPersianDialogDatePicker.updateDate(
-                        persianYear = 1403,
-                        persianMonth = 7,
-                        persianDay = 20
-                    )
-
-                    rememberPersianBottomSheetDatePickerController.updateDate(date = Date())
                     rememberPersianBottomSheetDatePickerController.updateDate(timestamp = Date().time)
-                    rememberPersianBottomSheetDatePickerController.updateDate(
-                        persianYear = 1403,
-                        persianMonth = 7,
-                        persianDay = 20
-                    )
                 }
 
 
                 rememberPersianDialogDatePicker.updateMaxYear(1420)
                 rememberPersianDialogDatePicker.updateMinYear(1395)
                 rememberPersianDialogDatePicker.updateYearRange(10)
-                rememberPersianDialogDatePicker.updateDisplayMonthNames(false)
-
 
                 rememberPersianBottomSheetDatePickerController.updateMaxYear(1420)
                 rememberPersianBottomSheetDatePickerController.updateMinYear(1395)
@@ -80,7 +64,9 @@ class MainActivity : ComponentActivity() {
                         Modifier.fillMaxWidth(),
                         todayTitle = "today",
                         dismissTitle = "close",
+                        submitTitle = "submit",
                         onDismissRequest = { showDialog.value = false },
+                        dismissOnClickOutside = false,
                         onDateChanged = { year, month, day ->
                             // do something...
                             Log.i(

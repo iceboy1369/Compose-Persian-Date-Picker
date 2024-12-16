@@ -1,20 +1,3 @@
-/*
- * Copyright (C) 2023 razaghimahdi (Mahdi Razzaghi Ghaleh)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-
 package com.razaghimahdi.compose_persian_date.dialog
 
 import androidx.annotation.FontRes
@@ -29,6 +12,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,6 +26,8 @@ import androidx.compose.ui.window.DialogProperties
 import com.razaghimahdi.compose_persian_date.linear_date_picker.LinearPersianDatePicker
 import com.razaghimahdi.compose_persian_date.core.components.NoPaddingAlertDialog
 import com.razaghimahdi.compose_persian_date.core.components.PersianDatePickerController
+import com.razaghimahdi.compose_persian_date.core.components.rememberDialogDatePicker
+import java.util.Date
 
 @Composable
 fun PersianLinearDatePickerDialog(
@@ -46,7 +35,7 @@ fun PersianLinearDatePickerDialog(
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
     onDateChanged: ((year: Int, month: Int, day: Int) -> Unit)? = null,
-    // submitTitle: String = "تایید",
+    submitTitle: String = "تایید",
     dismissTitle: String = "بستن",
     todayTitle: String = "امروز",
     textButtonStyle: TextStyle = LocalTextStyle.current,
@@ -56,8 +45,17 @@ fun PersianLinearDatePickerDialog(
     unSelectedTextStyle: TextStyle = LocalTextStyle.current,
     selectedTextStyle: TextStyle = LocalTextStyle.current,
     @FontRes font: Int? = null,
-    properties: DialogProperties = DialogProperties()
+    dismissOnClickOutside: Boolean = true
 ) {
+
+    var dateIsSet by remember { mutableStateOf(false) }
+    val controller0 = rememberDialogDatePicker()
+
+    if (!dateIsSet){
+        controller0.updateDisplayMonthNames(false)
+        controller0.updateDate(controller.getPersianYear(), controller.getPersianMonth(), controller.getPersianDay())
+        dateIsSet = true
+    }
 
 
     NoPaddingAlertDialog(
@@ -66,16 +64,16 @@ fun PersianLinearDatePickerDialog(
         shape = shape,
         backgroundColor = backgroundColor,
         contentColor = contentColor,
-        properties = properties,
+        properties = DialogProperties(dismissOnClickOutside = dismissOnClickOutside),
         title = { },
         text = {
             LinearPersianDatePicker(
                 modifier = modifier.padding(8.dp),
-                controller = controller,
+                controller = controller0,
                 contentColor = contentColor,
                 selectedTextStyle = selectedTextStyle,
                 unSelectedTextStyle = unSelectedTextStyle,
-                onDateChanged = onDateChanged,
+                onDateChanged = null,
                 font = font,
             )
         },
@@ -85,7 +83,9 @@ fun PersianLinearDatePickerDialog(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                TextButton(onClick = { controller.resetDate(onDateChanged) }) {
+                TextButton(onClick = {
+                    controller0.updateDate(Date().time)
+                }) {
                     Text(text = todayTitle, style = textButtonStyle, color = contentColor)
                 }
                 Row(
@@ -93,19 +93,31 @@ fun PersianLinearDatePickerDialog(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    TextButton(onClick = onDismissRequest) {
+                    TextButton(onClick = {
+                        controller.updateDate(
+                            persianYear = controller0.getPersianYear(),
+                            persianMonth = controller0.getPersianMonth(),
+                            persianDay = controller0.getPersianDay()
+                        )
+                        if (onDateChanged != null) {
+                            onDateChanged(
+                                controller.getPersianYear(),
+                                controller.getPersianMonth(),
+                                controller.getPersianDay()
+                            )
+                        }
+                        onDismissRequest()
+                    }) {
+                        Text(text = submitTitle, style = textButtonStyle, color = contentColor)
+                    }
+
+                    TextButton(onClick = {
+                        onDismissRequest()
+                    }) {
                         Text(text = dismissTitle, style = textButtonStyle, color = contentColor)
                     }
-                    /* TextButton(onClick = {
-                         onDismissRequest()
-                     }) {
-                         Text(text = submitTitle)
-                     }*/
                 }
-
             }
         },
     )
-
-
 }

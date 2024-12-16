@@ -1,21 +1,3 @@
-/*
- * Copyright (C) 2023 razaghimahdi (Mahdi Razzaghi Ghaleh)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-
-
 package com.razaghimahdi.compose_persian_date.bottom_sheet
 
 import androidx.annotation.FontRes
@@ -41,7 +23,6 @@ import androidx.compose.ui.unit.Dp
 import com.razaghimahdi.compose_persian_date.core.components.PersianDatePickerController
 import kotlinx.coroutines.launch
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerLinearModalBottomSheet(
@@ -64,7 +45,7 @@ fun DatePickerLinearModalBottomSheet(
     scrimColor: Color = BottomSheetDefaults.ScrimColor,
     dragHandle: @Composable (() -> Unit)? = { BottomSheetDefaults.DragHandle() },
     windowInsets: WindowInsets = BottomSheetDefaults.windowInsets,
-    properties: ModalBottomSheetProperties = ModalBottomSheetDefaults.properties(),
+    properties: ModalBottomSheetProperties = ModalBottomSheetDefaults.properties,
 ) {
 
     val coroutine = rememberCoroutineScope()
@@ -100,7 +81,7 @@ fun DatePickerLinearModalBottomSheet(
         tonalElevation = tonalElevation,
         scrimColor = scrimColor,
         dragHandle = dragHandle,
-        windowInsets = windowInsets,
+        contentWindowInsets = { windowInsets },
         properties = properties,
      )
 
