@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.compose.compiler)
+    id("maven-publish")
 }
 
 android {
@@ -46,4 +47,17 @@ dependencies {
     implementation(libs.persiandate)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("maven") {
+                from (components["release"])
+                groupId = "com.github.iceboy1369"
+                artifactId = "compose-persian-date-picker"
+                version = "1.2"
+            }
+        }
+    }
 }
