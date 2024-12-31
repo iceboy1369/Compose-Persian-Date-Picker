@@ -109,6 +109,8 @@ class PersianDatePickerController {
 
     fun updateYearRange(value: Int) {
         _yearRange.value = value
+        updateMinYear(getPersianYear() - yearRange)
+        updateMaxYear(getPersianYear() + yearRange)
     }
 
     fun updateDate(timestamp: Long) {
@@ -243,6 +245,5 @@ class PersianDatePickerController {
         }
 
     }
-
 
 }

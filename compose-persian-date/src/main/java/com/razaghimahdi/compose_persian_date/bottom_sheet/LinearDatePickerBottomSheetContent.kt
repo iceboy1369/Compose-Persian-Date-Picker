@@ -19,6 +19,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,6 +31,7 @@ import com.razaghimahdi.compose_persian_date.linear_date_picker.LinearPersianDat
 import com.razaghimahdi.compose_persian_date.core.components.AppButton
 import com.razaghimahdi.compose_persian_date.core.components.PersianDatePickerController
 import com.razaghimahdi.compose_persian_date.core.components.TextButton
+import com.razaghimahdi.compose_persian_date.core.components.rememberDialogDatePicker
 import com.razaghimahdi.compose_persian_date.util.Tools.isDateToday
 
 
@@ -52,18 +54,23 @@ internal fun LinearDatePickerBottomSheetContent(
     val recomposeToggleState = remember { mutableStateOf(false) }
     LaunchedEffect(recomposeToggleState.value) {}
 
+    var dateIsSet by remember { mutableStateOf(false) }
+    val tmpController = rememberDialogDatePicker()
 
-    val tmpController by remember(key1 = controller) {
-        mutableStateOf(PersianDatePickerController())
-    }
-    LaunchedEffect(controller) {
+    if (!dateIsSet){
         tmpController.updateDate(controller.date.toDate())
+        tmpController.updateMaxDay(controller.maxDay)
+        tmpController.updateMaxMonth(controller.maxMonth)
+        tmpController.updateMaxYear(controller.maxYear)
+        tmpController.updateMinYear(controller.minYear)
+        tmpController.updateDisplayMonthNames(controller.displayMonthNames)
+        if (controller.yearRange !=10){
+            tmpController.updateYearRange(controller.yearRange)
+        }
+        dateIsSet = true
     }
 
     val isToday = tmpController.getGregorianDate()?.isDateToday() ?: false
-
-
-
 
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
 
@@ -76,7 +83,6 @@ internal fun LinearDatePickerBottomSheetContent(
                     .fillMaxWidth()
                     .wrapContentHeight(), horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
 
                 Column(
                     modifier = Modifier

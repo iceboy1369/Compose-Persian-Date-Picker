@@ -17,9 +17,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -41,31 +43,31 @@ class MainActivity : ComponentActivity() {
                 val coroutine = rememberCoroutineScope()
                 val rememberPersianDialogDatePicker = rememberDialogDatePicker()
                 val rememberPersianBottomSheetDatePickerController = rememberDialogDatePicker()
-                val showDialog = remember { mutableStateOf(false) }
+                var showDialog by remember { mutableStateOf(false) }
                 val bottomSheetState = rememberModalBottomSheetState()
 
+                LaunchedEffect(Unit) {
+                    rememberPersianDialogDatePicker.updateMinYear(1415)
+                    rememberPersianDialogDatePicker.updateMaxYear(1420)
+                    rememberPersianDialogDatePicker.updateYearRange(2)
+//                    rememberPersianDialogDatePicker.updateDate(timestamp = Date().time)
+                    rememberPersianDialogDatePicker.updateDisplayMonthNames(false)
 
-                LaunchedEffect(key1 = Unit) {
-                    rememberPersianDialogDatePicker.updateDate(timestamp = Date().time)
                     rememberPersianBottomSheetDatePickerController.updateDate(timestamp = Date().time)
+                    rememberPersianBottomSheetDatePickerController.updateDisplayMonthNames (true)
+//                rememberPersianBottomSheetDatePickerController.updateMaxYear(1420)
+//                rememberPersianBottomSheetDatePickerController.updateMinYear(1390)
+//                rememberPersianBottomSheetDatePickerController.updateYearRange(15)
                 }
 
-
-                rememberPersianDialogDatePicker.updateMaxYear(1420)
-                rememberPersianDialogDatePicker.updateMinYear(1395)
-                rememberPersianDialogDatePicker.updateYearRange(10)
-
-                rememberPersianBottomSheetDatePickerController.updateMaxYear(1420)
-                rememberPersianBottomSheetDatePickerController.updateMinYear(1395)
-
-                if (showDialog.value) {
+                if (showDialog) {
                     PersianLinearDatePickerDialog(
                         rememberPersianDialogDatePicker,
                         Modifier.fillMaxWidth(),
                         todayTitle = "today",
                         dismissTitle = "close",
                         submitTitle = "submit",
-                        onDismissRequest = { showDialog.value = false },
+                        onDismissRequest = { showDialog = false },
                         dismissOnClickOutside = false,
                         onDateChanged = { year, month, day ->
                             // do something...
@@ -101,10 +103,12 @@ class MainActivity : ComponentActivity() {
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
 
-                        Button(onClick = { showDialog.value = true }) {
+                        Button(onClick = { showDialog = true }) {
                             Text(text = "نمایش دیالوگ")
                         }
-                        Text(text = rememberPersianDialogDatePicker.getPersianFullDate())
+                        Text(text =
+                            rememberPersianDialogDatePicker.getPersianFullDate()
+                        )
 
                         Spacer(modifier = Modifier.size(32.dp))
 

@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,8 +53,16 @@ fun PersianLinearDatePickerDialog(
     val controller0 = rememberDialogDatePicker()
 
     if (!dateIsSet){
-        controller0.updateDisplayMonthNames(false)
-        controller0.updateDate(controller.getPersianYear(), controller.getPersianMonth(), controller.getPersianDay())
+        controller0.updateDate(controller.date.toDate())
+        controller0.updateDisplayMonthNames(controller.displayMonthNames)
+        controller0.updateYearRange(controller.yearRange)
+        controller0.updateMaxDay(controller.maxDay)
+        controller0.updateMaxMonth(controller.maxMonth)
+        controller0.updateMaxYear(controller.maxYear)
+        controller0.updateMinYear(controller.minYear)
+        if (controller.yearRange !=10){
+            controller0.updateYearRange(controller.yearRange)
+        }
         dateIsSet = true
     }
 
@@ -94,11 +103,7 @@ fun PersianLinearDatePickerDialog(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     TextButton(onClick = {
-                        controller.updateDate(
-                            persianYear = controller0.getPersianYear(),
-                            persianMonth = controller0.getPersianMonth(),
-                            persianDay = controller0.getPersianDay()
-                        )
+                        controller.updateDate(controller0.date.toDate())
                         if (onDateChanged != null) {
                             onDateChanged(
                                 controller.getPersianYear(),
