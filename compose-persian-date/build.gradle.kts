@@ -56,7 +56,7 @@ afterEvaluate {
                 from (components["release"])
                 groupId = "com.github.iceboy1369"
                 artifactId = "compose-persian-date-picker"
-                version = "1.2.1"
+                version = "1.2.2"
             }
         }
     }

@@ -12,7 +12,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -103,6 +102,12 @@ fun PersianLinearDatePickerDialog(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     TextButton(onClick = {
+                        onDismissRequest()
+                    }) {
+                        Text(text = dismissTitle, style = textButtonStyle, color = contentColor)
+                    }
+
+                    TextButton(onClick = {
                         controller.updateDate(controller0.date.toDate())
                         if (onDateChanged != null) {
                             onDateChanged(
@@ -114,12 +119,6 @@ fun PersianLinearDatePickerDialog(
                         onDismissRequest()
                     }) {
                         Text(text = submitTitle, style = textButtonStyle, color = contentColor)
-                    }
-
-                    TextButton(onClick = {
-                        onDismissRequest()
-                    }) {
-                        Text(text = dismissTitle, style = textButtonStyle, color = contentColor)
                     }
                 }
             }
